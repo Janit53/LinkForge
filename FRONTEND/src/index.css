@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+#homeNavBarBtns {
+    background: linear-gradient(transparent, rgb(101, 158, 218));
+}
