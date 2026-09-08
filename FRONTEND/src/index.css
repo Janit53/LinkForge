@@ -3,3 +3,13 @@
 #homeNavBarBtns {
     background: linear-gradient(transparent, rgb(101, 158, 218));
 }
+
+.user-analytics-row-css {
+    /* background-color: wheat; */
+}
+
+th,
+td {
+    padding: 10px 20px;
+    /* border-radius: 16px; */
+}

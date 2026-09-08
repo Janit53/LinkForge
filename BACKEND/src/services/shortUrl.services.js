@@ -1,5 +1,5 @@
 import { saveArchShortUrlDao } from "../dao/archive.dao.js";
-import { saveShortUrl, getDataFromShortUrlDao, checkShortUrlExistsDao, expiredByDateUrlsStatusUpdateDao, getExpiredUrlsDao, deleteExpiredUrlsDao, updateStatusToInactiveDao, checkCacheDao, setIntoCache } from "../dao/shortUrl.dao.js";
+import { saveShortUrl, getShortUrlByUserIdDao, getDataFromShortUrlDao, checkShortUrlExistsDao, expiredByDateUrlsStatusUpdateDao, getExpiredUrlsDao, deleteExpiredUrlsDao, updateStatusToInactiveDao, checkCacheDao, setIntoCache, deleteShortUrlDao } from "../dao/shortUrl.dao.js";
 import { ConflictError } from "../utils/errorHandler.js";
 import { generateNanoId } from "../utils/helper.js";
 import { deleteArchivedShortUrlService } from "./archive.services.js";
@@ -18,6 +18,8 @@ const createShortUrlService = async (url, userId = null, expiresAt) => {
     }
 
     if (!nanoUrl) throw new Error("Short URL creation service unavailable!")
+
+    console.log(userId)
 
     if (userId) {
         await saveShortUrl(nanoUrl, url, userId, expiresAt);
@@ -138,6 +140,19 @@ const setShortUrlInCacheService = async (slug, originalUrl) => {
     return true;
 }
 
+const getShortUrlByUserIdService = async (userId) => {
+    const rawData = await getShortUrlByUserIdDao(userId);
+
+    if (!rawData) return null;
+
+    return rawData;
+}
+
+const deleteShortUrlService = async (slug) => {
+    await deleteShortUrlDao(slug);
+    return true;
+}
+
 export {
     checkShortUrlExistsService,
     createShortUrlService,
@@ -147,5 +162,7 @@ export {
     expiredByDateShortUrlStatusManagementService,
     regularStatusMonitoringService,
     getShortUrlInCacheService,
-    setShortUrlInCacheService
+    setShortUrlInCacheService,
+    getShortUrlByUserIdService,
+    deleteShortUrlService
 };

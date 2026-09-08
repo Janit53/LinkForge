@@ -41,6 +41,8 @@ const loginUserApi = async (email, password) => {
             })
         });
 
+        console.log(response)
+
         if (!response.ok) {
             throw new Error(`Request failed: ${response.status}`);
         }

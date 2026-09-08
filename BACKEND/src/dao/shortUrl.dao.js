@@ -141,6 +141,24 @@ const checkCacheDao = async (slug) => {
     return data;
 }
 
+const getShortUrlByUserIdDao = async (userId) => {
+    const data = await shortUrl.find({
+        user: userId
+    });
+
+    if (data.length == 0) return null;
+
+    return data;
+}
+
+const deleteShortUrlDao = async (slug) => {
+    await shortUrl.deleteOne({
+        shortUrl: slug
+    })
+
+    return true;
+}
+
 export {
     saveShortUrl,
     getDataFromShortUrlDao,
@@ -152,5 +170,7 @@ export {
     updateStatusToInactiveDao,
     updateStatusToExpiredDao,
     checkCacheDao,
-    setIntoCache
+    setIntoCache,
+    getShortUrlByUserIdDao,
+    deleteShortUrlDao
 }

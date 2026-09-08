@@ -25,9 +25,10 @@ function App() {
 
 		user.then((user) => {
 			console.log("App.jsx")
-			console.log(user);
+			console.log(user.user);
+
 			if (user)
-				dispatch(login(user));
+				dispatch(login(user.user));
 			else
 				dispatch(logout());
 		})
@@ -38,6 +39,8 @@ function App() {
 				setLoading(false);
 			})
 	}, [])
+
+
 
 	return (loading ? (<Loading />) :
 		(

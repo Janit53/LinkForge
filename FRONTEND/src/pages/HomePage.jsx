@@ -1,10 +1,11 @@
 import { Activity, useState } from "react";
 import UrlForm from "../components/UrlForm";
+import { UserUrls } from "../components/UserUrls";
 
 
 const HomePage = () => {
 
-    const tabs = ["Shorten URL", "Bulk"];
+    const tabs = ["Shorten URL", "Bulk", "Your Urls"];
     const [activeTab, setActiveTab] = useState("Shorten URL");
 
     return (
@@ -50,10 +51,11 @@ const HomePage = () => {
                         expiryDateVisibilityMode="visible"
                     />
                 </Activity>
-                {/* {activeTab == tabs[0] && <UrlForm
-                    customUrlVisibilityMode="visible"
-                    expiryDateVisibilityMode="visible"
-                />} */}
+
+                <Activity mode={(activeTab == tabs[2]) ? "visible" : "hidden"}>
+                    <UserUrls />
+                </Activity>
+
 
             </div>
 

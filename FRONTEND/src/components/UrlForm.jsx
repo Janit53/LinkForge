@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
-import { checkSlugExistsApi, createShortUrlApi } from "../apis/shortUrl.api.js";
+import { checkSlugExistsApi, createShortUrlApi, getShortUrlsOfUserApi } from "../apis/shortUrl.api.js";
 import { Activity } from "react";
 import { GetQrCode } from "./GetQrCode.jsx";
 import { useSelector } from "react-redux";
@@ -15,15 +15,24 @@ const UrlForm = ({ customUrlVisibilityMode, expiryDateVisibilityMode }) => {
     const [error, setError] = useState("");
     const [qrVisibility, setQrVisibility] = useState(false);
     const userAuthStatus = useSelector((state) => state.user.authStatus);
+    const userInfo = useSelector((state) => state.user.userData)
 
     const getShortUrl = async (url, slug, expiresAt) => {
 
         try {
+
             if (!url) {
                 setError("URL field empty!")
             }
             setLoading(true);
-            const data = await createShortUrlApi(url, slug, expiresAt);
+
+
+
+            const userId = userInfo.user._id;
+
+            console.log(await getShortUrlsOfUserApi(userId))
+
+            const data = await createShortUrlApi(url, userId || "", slug, expiresAt)
 
             if (!data.success) {
                 setError(data.data);

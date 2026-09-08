@@ -4,7 +4,9 @@ import {
     createShortUrlService,
     checkShortUrlExistsService,
     getShortUrlInCacheService,
-    setShortUrlInCacheService
+    setShortUrlInCacheService,
+    getShortUrlByUserIdService,
+    deleteShortUrlService
 } from "../services/shortUrl.services.js";
 import { AppError, NotFoundError } from "../utils/errorHandler.js";
 import { wrapAsync } from "../utils/tryCatchWrapper.js";
@@ -16,7 +18,7 @@ const createShortUrlController = async (req, res, next) => {
     // when Only if we want to do something with the error before letting it continue, like console.log(err)
     // augment ai - solves error problem, it goes through the code base and tlls where the problem lies.
     try {
-        const { url, expiresAt } = req.body;
+        const { url, expiresAt, userId } = req.body;
 
         let defaultExpiryDate;
         if (!expiresAt) {
@@ -25,8 +27,8 @@ const createShortUrlController = async (req, res, next) => {
 
         let shortUrlId;
 
-        if (req.user) {
-            shortUrlId = await createShortUrlService(url, req.user._id, defaultExpiryDate);
+        if (userId) {
+            shortUrlId = await createShortUrlService(url, userId, defaultExpiryDate);
         }
         else {
             shortUrlId = await createShortUrlService(url, null, defaultExpiryDate);
@@ -109,10 +111,46 @@ const createShortUrlsInBulkController = async (req, res) => {
     return null
 }
 
+const getShortUrlByUserIdController = async (req, res) => {
+    const userId = req.params.userid;
+    console.log(userId)
+
+    const data = await getShortUrlByUserIdService(userId);
+
+    // console.log("")
+
+    res
+        .status(200)
+        .json({ data })
+}
+
+const deleteShortUrlController = async (req, res) => {
+    const slug = req.params.slug;
+
+    const delurl = await deleteShortUrlService(slug);
+
+    if (delurl) {
+        console.log("ShortUrl deleted")
+        res
+            .status(204)
+            .json({
+                success: true
+            })
+    }
+    else {
+        res.status(400).json({
+            success: false
+        })
+    }
+
+}
+
 export {
     createShortUrlController,
     createCustomUrlController,
     redirectFromShortUrlController,
     checkSlugExistsController,
-    createShortUrlsInBulkController
+    createShortUrlsInBulkController,
+    getShortUrlByUserIdController,
+    deleteShortUrlController
 };
