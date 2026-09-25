@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid"
 import cron from 'node-cron';
-import { expiredByDateShortUrlStatusManagementService, regularStatusMonitoringService } from "../services/shortUrl.services.js";
+import { regularStatusMonitoringService } from "../services/shortUrl.services.js";
 
 export const generateNanoId = (length) => {
     return nanoid(length);

@@ -26,9 +26,7 @@ const UrlForm = ({ customUrlVisibilityMode, expiryDateVisibilityMode }) => {
             }
             setLoading(true);
 
-
-
-            const userId = userInfo.user._id;
+            const userId = userInfo._id;
 
             console.log(await getShortUrlsOfUserApi(userId))
 
@@ -75,7 +73,7 @@ const UrlForm = ({ customUrlVisibilityMode, expiryDateVisibilityMode }) => {
                                 value={url}
                                 onChange={(e) => {
                                     setUrl(e.target.value)
-                                    console.log(url) // idhar he ek console :(
+                                    console.log("hi", e.target.value) // idhar he ek console :(
                                 }}
                                 className="w-full rounded-lg border border-slate-300 px-4 py-3 text-black outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
                             />
